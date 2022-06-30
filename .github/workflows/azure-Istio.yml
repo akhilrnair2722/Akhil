@@ -30,19 +30,11 @@ jobs:
       with:
         resource-group: ${{ env.RESOURCE_GROUP }}
         cluster-name: ${{ env.CLUSTER_NAME }} 
-    # Runs Helm to create manifest files
-    - name: Bake deployment
-      uses: azure/k8s-bake@v2.1
-      with:
-        renderEngine: 'helm'
-        helmChart: ${{ env.CHART_PATH }}
-        overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
-        helm-version: 'latest' 
-      id: bake
-    - run: |
-        kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
-    - name: Azure deploy  
-      uses: Azure/k8s-deploy@v1
-      with:
-        namespace: ${{ env.NAMESPACE }}
-        manifests: ${{ steps.bake.outputs.manifestsBundle }}
+    
+    - name: Checkout 
+      uses: actions/checkout@v2
+    - name: Setup Istioctl
+      uses: ./manifests/profiles/
+    - name: Check Istioctl
+      run: |
+        istioctl version --remote=false
