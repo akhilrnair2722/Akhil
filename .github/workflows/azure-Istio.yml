@@ -30,7 +30,6 @@ jobs:
       with:
         resource-group: ${{ env.RESOURCE_GROUP }}
         cluster-name: ${{ env.CLUSTER_NAME }} 
-    
     - name: Checkout 
       uses: actions/checkout@v2
     - name: Setup Istioctl
