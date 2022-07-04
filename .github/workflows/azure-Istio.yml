@@ -44,7 +44,7 @@ env:
   CHART_OVERRIDE_PATH: "./manifests/charts/base/"
   CLUSTER_NAME: "kube1"
   NAMESPACE: "istio-system"
-  CLUSTER_NAME2: "kube2"
+  CLUSTER_NAME2: "kube2-dns-e4c136f9.hcp.eastus.azmk8s.io"
   RESOURCE_GROUP2: "kuber2"
 jobs:
   deployKube1:
