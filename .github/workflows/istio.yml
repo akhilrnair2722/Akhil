@@ -42,12 +42,12 @@ jobs:
     - name: istio-install
       run: |
          /home/localadmin/istio-1.14.1/bin/istioctl install --update --set profile=${{env.profile}} -y
+      continue-on-error: true
     - name: Get K8s context
       uses: azure/aks-set-context@v2.0
       with:
         resource-group: ${{ env.RESOURCE_GROUP2 }}
         cluster-name: ${{ env.CLUSTER_NAME2 }}
-
     - name: create namespace
       run: |
         kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
