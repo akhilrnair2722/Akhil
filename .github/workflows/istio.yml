@@ -45,5 +45,5 @@ jobs:
         kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: istio-install
       run: |
-         istioctl install --set profile=${{env.profile}} -y
+         /home/localadmin/istio-1.14.1/bin/istioctl install --set profile=${{env.profile}} -y
    
