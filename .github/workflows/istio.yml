@@ -7,10 +7,12 @@ on:
   workflow_dispatch:
 
 env:
-  RESOURCE_GROUP: "azurehelm"
-  CLUSTER_NAME: "kube1"
+  RESOURCE_GROUP1: "azurehelm"
+  CLUSTER_NAME1: "kube1"
   NAMESPACE: "istio-system"
   profile: "demo"
+  RESOURCE_GROUP2: "kuber2"
+  CLUSTER_NAME2: "kube2"
 
 jobs:
   buildImage:
@@ -27,18 +29,24 @@ jobs:
       uses: azure/login@v1.4.3
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+       # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
     - name: Get K8s context
       uses: azure/aks-set-context@v2.0
       with:
-        resource-group: ${{ env.RESOURCE_GROUP }}
-        cluster-name: ${{ env.CLUSTER_NAME }} 
-    # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+        resource-group: ${{ env.RESOURCE_GROUP1 }}
+        cluster-name: ${{ env.CLUSTER_NAME1 }}
+
+    - name: create namespace
+      run: |
+        kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
+    - name: istio-install
+      run: |
+         /home/localadmin/istio-1.14.1/bin/istioctl install --set profile=${{env.profile}} -y
     - name: Get K8s context
       uses: azure/aks-set-context@v2.0
       with:
-        resource-group: ${{ env.RESOURCE_GROUP }}
-        cluster-name: ${{ env.CLUSTER_NAME }}
+        resource-group: ${{ env.RESOURCE_GROUP2 }}
+        cluster-name: ${{ env.CLUSTER_NAME2 }}
 
     - name: create namespace
       run: |
