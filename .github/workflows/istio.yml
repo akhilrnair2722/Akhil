@@ -10,6 +10,7 @@ env:
   RESOURCE_GROUP: "azurehelm"
   CLUSTER_NAME: "kube1"
   NAMESPACE: "istio-system"
+  profile: "demo"
 
 jobs:
   buildImage:
@@ -42,12 +43,7 @@ jobs:
     - name: create namespace
       run: |
         kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
-    - name: helm add repo
+    - name: istio-install
       run: |
-         helm repo add istio https://istio-release.storage.googleapis.com/charts
-    - name: helm update
-      run: |
-         helm repo update
-    - name: helm install
-      run: |
-         helm upgrade --install istio-base --debug  istio/base  -n istio-system --wait 
+         istioctl install --set profile=${{env.profile}} -y
+   
