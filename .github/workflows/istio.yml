@@ -41,7 +41,7 @@ jobs:
         kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: istio-install
       run: |
-         /home/localadmin/istio-1.14.1/bin/istioctl install --set profile=${{env.profile}} -y
+         /home/localadmin/istio-1.14.1/bin/istioctl install --update --set profile=${{env.profile}} -y
     - name: Get K8s context
       uses: azure/aks-set-context@v2.0
       with:
@@ -53,5 +53,5 @@ jobs:
         kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: istio-install
       run: |
-         /home/localadmin/istio-1.14.1/bin/istioctl install --set profile=${{env.profile}} -y
+         /home/localadmin/istio-1.14.1/bin/istioctl install --update --set profile=${{env.profile}} -y
    
