@@ -45,4 +45,4 @@ jobs:
         kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -  
     - name: helm install
       run: |
-         helm upgrade --install istiod --debug  ${{ env.CHART_PATH }}  -n istio-system --wait    
+         helm install istiod --debug  ${{ env.CHART_PATH }}  -n istio-system --wait    
