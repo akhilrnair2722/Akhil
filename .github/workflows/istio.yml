@@ -13,7 +13,7 @@ env:
   RESOURCE_GROUP2: "kuber2"
   CLUSTER_NAME2: "kube2"
   YAMLPATH: "./Istio/"
-  CHART_OVERRIDE_PATH: "./aks-
+  CHART_OVERRIDE_PATH: "./aks-"
 
 jobs:
   buildImage:
