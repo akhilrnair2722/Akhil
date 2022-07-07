@@ -1,5 +1,4 @@
-name: Build and deploy an app to AKS with Helm
-
+name: Istio-Private AKS
 on:
   push:
     branches:
@@ -13,6 +12,8 @@ env:
   profile: "demo"
   RESOURCE_GROUP2: "kuber2"
   CLUSTER_NAME2: "kube2"
+  YAMLPATH: "./Istio/"
+  CHART_OVERRIDE_PATH: "./aks-
 
 jobs:
   buildImage:
@@ -23,25 +24,27 @@ jobs:
     steps:
     # Checks out the repository this file is in
     - uses: actions/checkout@v3
-    
     # Logs in with your Azure credentials
     - name: Azure login
       uses: azure/login@v1.4.3
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-       # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+    # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
     - name: Get K8s context
       uses: azure/aks-set-context@v2.0
       with:
         resource-group: ${{ env.RESOURCE_GROUP1 }}
         cluster-name: ${{ env.CLUSTER_NAME1 }}
-
     - name: create namespace
       run: |
         az aks command invoke --resource-group ${{ env.RESOURCE_GROUP1 }} --name ${{ env.CLUSTER_NAME1 }} --command "kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -"  
     - name: istio-install
       run: |
          /home/localadmin/istio-1.14.1/bin/istioctl install --set profile=${{env.profile}} -y
+    - name: Configure Multiprimary for cluster1
+      run: |
+        kubectl get namespace istio-system && \
+        kubectl label namespace istio-system topology.istio.io/network=network1"
       continue-on-error: true
     - name: Get K8s context
       uses: azure/aks-set-context@v2.0
@@ -54,4 +57,9 @@ jobs:
     - name: istio-install
       run: |
          /home/localadmin/istio-1.14.1/bin/istioctl install --set profile=${{env.profile}} -y
-   
+    - name: Configure Multiprimary for cluster1
+      run: |
+        kubectl get namespace istio-system && \
+        kubectl label namespace istio-system topology.istio.io/network=network1"
+  
+    
