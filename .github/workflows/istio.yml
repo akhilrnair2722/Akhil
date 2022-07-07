@@ -57,9 +57,6 @@ jobs:
     - name: istio-install
       run: |
          /home/localadmin/istio-1.14.1/bin/istioctl install --set profile=${{env.profile}} -y
-    - name: Configure Multiprimary for cluster1
-      run: |
-        kubectl get namespace istio-system && \
-        kubectl label namespace istio-system topology.istio.io/network=network1"
+    
   
     
